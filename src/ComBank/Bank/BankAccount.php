@@ -25,19 +25,24 @@ class BankAccount implements BackAccountInterface
 {
     use AmountValidationTrait;
 
-    private  $balance;
+    private  float $balance;
 
-    private  $status;
+    private  bool $status;
 
-    private  $overdraft;
+    private  OverdraftInterface $overdraft;
+
+    private bool $international;
+
+    private Email $email;
 
     function __construct(float $balance = 100)
     {
         $this->validateAmount($balance);
-        
+
         $this->balance = $balance;
         $this->status = true;
         $this->overdraft =  new NoOverdraft();
+        $this->international = false;
     }
 
     public function transaction(BankTransactionInterface $transaction): void
@@ -46,7 +51,7 @@ class BankAccount implements BackAccountInterface
         $transaction->applyTransaction($this);
     }
 
-    public function openAccount():bool
+    public function openAccount(): bool
     {
         if (!isset($this->status)) $this->status = true;
 
@@ -79,7 +84,8 @@ class BankAccount implements BackAccountInterface
         return $this->overdraft;
     }
 
-    public function applyOverdraft(OverdraftInterface $overdraft): void {
+    public function applyOverdraft(OverdraftInterface $overdraft): void
+    {
         $this->overdraft = $overdraft;
     }
 
@@ -102,4 +108,23 @@ class BankAccount implements BackAccountInterface
      *
      * @return  self
      */
+
+    /**
+     * Get the value of international
+     */
+    public function getInternational()
+    {
+        return $this->international;
+    }
+
+    public function setInternational(bool $bool)
+    {
+        $this->international = $bool;
+    }
+
+    public function showBalance(): string
+    {
+        return $this->getInternational() ? $this->getBalance() * 1.1 . "$ (USD) " : $this->getBalance() . "€ (EUR) ";
+    }
+
 }
