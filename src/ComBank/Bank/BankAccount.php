@@ -10,12 +10,8 @@ namespace ComBank\Bank;
  */
 
 use ComBank\Exceptions\BankAccountException;
-use ComBank\Exceptions\InvalidArgsException;
-use ComBank\Exceptions\ZeroAmountException;
 use ComBank\OverdraftStrategy\NoOverdraft;
 use ComBank\Bank\Contracts\BackAccountInterface;
-use ComBank\Exceptions\FailedTransactionException;
-use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
@@ -31,10 +27,6 @@ class BankAccount implements BackAccountInterface
 
     private  OverdraftInterface $overdraft;
 
-    private bool $international;
-
-    private Email $email;
-
     function __construct(float $balance = 100)
     {
         $this->validateAmount($balance);
@@ -42,7 +34,6 @@ class BankAccount implements BackAccountInterface
         $this->balance = $balance;
         $this->status = true;
         $this->overdraft =  new NoOverdraft();
-        $this->international = false;
     }
 
     public function transaction(BankTransactionInterface $transaction): void
@@ -93,8 +84,7 @@ class BankAccount implements BackAccountInterface
     {
         $this->balance = $balance;
     }
-
-
+    
     /**
      * Get the value of status
      */
@@ -102,29 +92,4 @@ class BankAccount implements BackAccountInterface
     {
         return $this->status;
     }
-
-    /**
-     * Set the value of status
-     *
-     * @return  self
-     */
-
-    /**
-     * Get the value of international
-     */
-    public function getInternational()
-    {
-        return $this->international;
-    }
-
-    public function setInternational(bool $bool)
-    {
-        $this->international = $bool;
-    }
-
-    public function showBalance(): string
-    {
-        return $this->getInternational() ? $this->getBalance() * 1.1 . "$ (USD) " : $this->getBalance() . "€ (EUR) ";
-    }
-
 }

@@ -63,11 +63,6 @@ try {
     pl('Error transaction: ' . $e->getMessage());
 }
 
-pl('--------- [Start testing national account (No conversion) ] --------');
-$bankAccount1->setInternational(false);
-pl('My Balance: ' . $bankAccount1->showBalance());
-
-
 //---[Bank account 2]---/
 pl('--------- [Start testing bank account #2, Silver overdraft (100.0 funds)] --------');
 try {
@@ -116,8 +111,4 @@ try {
 } catch (ZeroAmountException $e) {
     pl('' . $e->getMessage());
 }
-pl('--------- [Start testing international account (Dollar conversion) ] --------');
-pl('My Balance: ' . $bankAccount2->showBalance());
-pl('Converting to Dollars (Rate: 1 USD = 1.10€)');
-$bankAccount2->setInternational(true);
-pl('My Balance: ' . $bankAccount2->showBalance());
+
