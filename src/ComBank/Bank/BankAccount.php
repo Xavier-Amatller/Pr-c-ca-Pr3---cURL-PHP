@@ -92,4 +92,6 @@ class BankAccount implements BackAccountInterface
     {
         return $this->status;
     }
+
+    
 }

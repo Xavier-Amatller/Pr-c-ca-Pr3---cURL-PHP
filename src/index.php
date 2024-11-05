@@ -8,6 +8,7 @@
  */
 
 use ComBank\Bank\BankAccount;
+use ComBank\Person\Person;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\DepositTransaction;
 use ComBank\Transactions\WithdrawTransaction;
@@ -15,7 +16,6 @@ use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\Exceptions\ZeroAmountException;
-use ComBank\OverdraftStrategy\NoOverdraft;
 
 require_once 'bootstrap.php';
 
@@ -62,6 +62,9 @@ try {
 } catch (InvalidOverdraftFundsException $e) {
     pl('Error transaction: ' . $e->getMessage());
 }
+
+
+
 
 //---[Bank account 2]---/
 pl('--------- [Start testing bank account #2, Silver overdraft (100.0 funds)] --------');
@@ -111,4 +114,3 @@ try {
 } catch (ZeroAmountException $e) {
     pl('' . $e->getMessage());
 }
-
