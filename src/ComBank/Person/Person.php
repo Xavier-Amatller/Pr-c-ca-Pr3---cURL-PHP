@@ -2,83 +2,64 @@
 
 namespace ComBank\Person;
 
-use ComBank\Bank\Contracts\BackAccountInterface;
+use Combank\Support\Traits\APIConnectionsTrait;
 
 class Person
 {
-    public string $DNI;
-    public string $EMAIL;
+    use APIConnectionsTrait;
 
-    /**
-     * @var BackAccountInterface[]
-     */
-    public array $bankAccounts;
+    public string $name;
+    public int $IDCARD;
+    public string $email;
 
-    public function __construct(string $EMAIL)
+
+    public function __construct(string $name, int $IDCARD, string $email)
     {
-        $this->DNI = "";
-        $this->EMAIL = $EMAIL;
-        $this->bankAccounts = [];
+        $this->$name = $name;
+
+        $this->IDCARD = $IDCARD;
+
+        $this->email = $this->validateEmail($email);
     }
 
 
     /**
-     * Get the value of DNI
+     * Get the value of IDCARD
      */
-    public function getDNI()
+    public function getIDCARD()
     {
-        return $this->DNI;
+        return $this->IDCARD;
     }
 
     /**
-     * Set the value of DNI
+     * Set the value of IDCARD
      *
      * @return  self
      */
-    public function setDNI($DNI)
+    public function setIDCARD($IDCARD)
     {
-        $this->DNI = $DNI;
+        $this->IDCARD = $IDCARD;
 
         return $this;
     }
 
     /**
-     * Get the value of EMAIL
+     * Get the value of email
      */
-    public function getEMAIL()
+    public function getEmail()
     {
-        return $this->EMAIL;
+        return $this->email;
     }
 
     /**
-     * Set the value of EMAIL
+     * Set the value of email
      *
      * @return  self
      */
-    public function setEMAIL($EMAIL)
+    public function setEmail($email)
     {
-        $this->EMAIL = $EMAIL;
+        $this->email = $email;
 
-        return $this;
-    }
-
-    /**
-     * Get the value of bankAccounts
-     */
-    public function getBankAccounts()
-    {
-        return $this->bankAccounts;
-    }
-
-    /**
-     * Set the value of bankAccounts
-     *
-     * @return  self
-     */
-    public function addBankAccount(BackAccountInterface $bankAccount)
-    {
-        // array_push($this->bankAccounts, $bankAccount);
-        $this->bankAccounts[] = $bankAccount;
         return $this;
     }
 }

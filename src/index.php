@@ -8,7 +8,6 @@
  */
 
 use ComBank\Bank\BankAccount;
-use ComBank\Person\Person;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\DepositTransaction;
 use ComBank\Transactions\WithdrawTransaction;

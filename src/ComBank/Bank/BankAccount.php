@@ -15,25 +15,30 @@ use ComBank\Bank\Contracts\BackAccountInterface;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
-use Exception;
+use ComBank\Person\Person;
 
 class BankAccount implements BackAccountInterface
 {
     use AmountValidationTrait;
 
-    private  float $balance;
+    protected  float $balance;
 
-    private  bool $status;
+    protected  bool $status;
 
-    private  OverdraftInterface $overdraft;
+    protected  OverdraftInterface $overdraft;
 
-    function __construct(float $balance = 100)
+    protected Person $holder;
+
+    protected string $CURRENCY;
+
+    function __construct(float $balance = 100, string $CURRENCY = "€")
     {
         $this->validateAmount($balance);
 
         $this->balance = $balance;
         $this->status = true;
         $this->overdraft =  new NoOverdraft();
+        $this->CURRENCY = $CURRENCY;
     }
 
     public function transaction(BankTransactionInterface $transaction): void
@@ -84,14 +89,22 @@ class BankAccount implements BackAccountInterface
     {
         $this->balance = $balance;
     }
-    
+
     /**
      * Get the value of status
      */
-    public function getStatus()
+    public function getStatus(): bool
     {
         return $this->status;
     }
 
-    
+
+
+    /**
+     * Get the value of CURRENCY
+     */
+    public function getCURRENCY(): string
+    {
+        return $this->CURRENCY;
+    }
 }
