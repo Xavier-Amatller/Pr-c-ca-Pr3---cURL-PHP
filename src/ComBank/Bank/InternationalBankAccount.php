@@ -3,7 +3,7 @@
 namespace ComBank\Bank;
 
 use ComBank\Bank\BankAccount;
-use Combank\Support\Traits\APIConnectionsTrait;
+use ComBank\Support\Traits\APIConnectionsTrait;
 
 class InternationalBankAccount extends BankAccount
 {
@@ -16,6 +16,8 @@ class InternationalBankAccount extends BankAccount
 
     public function getConvertedBalance(): float
     {
+        pl("hoala");
+        // return 0;
         return $this->convertBalance($this->balance);
     }
 

@@ -15,6 +15,9 @@ use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\Exceptions\ZeroAmountException;
+use ComBank\Bank\InternationalBankAccount;
+use ComBank\Bank\NationalBankAccountBankAccount;
+
 
 require_once 'bootstrap.php';
 
@@ -113,3 +116,6 @@ try {
 } catch (ZeroAmountException $e) {
     pl('' . $e->getMessage());
 }
+
+$internationalAccount = new InternationalBankAccount(100);
+pl($internationalAccount->getConvertedBalance());
