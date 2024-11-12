@@ -31,7 +31,7 @@ class BankAccount implements BackAccountInterface
 
     protected string $CURRENCY;
 
-    function __construct(float $balance = 100, string $CURRENCY = "€")
+    function __construct(float $balance = 100, string $CURRENCY = "€ (EUR)")
     {
         $this->validateAmount($balance);
 
@@ -106,5 +106,25 @@ class BankAccount implements BackAccountInterface
     public function getCURRENCY(): string
     {
         return $this->CURRENCY;
+    }
+
+    /**
+     * Get the value of holder
+     */ 
+    public function getHolder()
+    {
+        return $this->holder;
+    }
+
+    /**
+     * Set the value of holder
+     *
+     * @return  self
+     */ 
+    public function setHolder($holder)
+    {
+        $this->holder = $holder;
+
+        return $this;
     }
 }

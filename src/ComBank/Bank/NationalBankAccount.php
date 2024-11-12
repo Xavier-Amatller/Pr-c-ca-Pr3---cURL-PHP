@@ -9,6 +9,6 @@ class NationalBankAccount extends BankAccount
 
     public function __construct(float $balance)
     {
-        parent::__construct($balance);
+        parent::__construct($balance, "");
     }
 }

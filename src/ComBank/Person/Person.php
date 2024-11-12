@@ -19,7 +19,7 @@ class Person
 
         $this->IDCARD = $IDCARD;
 
-        $this->email = $this->validateEmail($email);
+        $this->email = $email;
     }
 
 
