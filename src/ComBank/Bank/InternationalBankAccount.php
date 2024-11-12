@@ -16,8 +16,6 @@ class InternationalBankAccount extends BankAccount
 
     public function getConvertedBalance(): float
     {
-        pl("hoala");
-        // return 0;
         return $this->convertBalance($this->balance);
     }
 

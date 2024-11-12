@@ -40,8 +40,12 @@ trait APIConnectionsTrait
         } catch (GuzzleException $e) {
             pl($e->getMessage());
         }
-        $a = json_decode($response->getBody()->getContents());
-        return $a["convertedAmount"];
+
+        $content = json_decode($response->getBody()->getContents(),true);
+
+        // return $content->getConvertedAmount();
+        
+        return $content["convertedAmount"];
     }
 
     public function detectFraud(BankTransactionInterface $transaction): bool
