@@ -18,6 +18,7 @@ use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Support\Traits\APIConnectionsTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 use ComBank\Person\Person;
+use ComBank\History\TransactionHistory;
 
 class BankAccount implements BackAccountInterface
 {
@@ -35,6 +36,7 @@ class BankAccount implements BackAccountInterface
 
     protected string $CURRENCY;
 
+    private TransactionHistory $transactionHistory;
 
     function __construct(float $balance = 100, string $CURRENCY = "€ (EUR)")
     {
@@ -44,6 +46,8 @@ class BankAccount implements BackAccountInterface
         $this->status = true;
         $this->overdraft =  new NoOverdraft();
         $this->CURRENCY = $CURRENCY;
+
+        $this->transactionHistory = new TransactionHistory();
     }
 
     public function transaction(BankTransactionInterface $transaction): void
@@ -51,8 +55,10 @@ class BankAccount implements BackAccountInterface
         if (!isset($this->status) || !$this->status)
             throw new BankAccountException("La cuenta no esta abierta");
 
-        if($this->detectFraud($transaction))
+        if ($this->detectFraud($transaction))
             throw new FraudulentTransactionException("Fraudulent transaction");
+
+        $this->getTransactionHistory()->addTransaction($transaction);
 
         $transaction->applyTransaction($this);
     }
@@ -136,5 +142,10 @@ class BankAccount implements BackAccountInterface
         $this->holder = $holder;
 
         return $this;
+    }
+
+    public function getTransactionHistory(): TransactionHistory
+    {
+        return $this->transactionHistory;
     }
 }
