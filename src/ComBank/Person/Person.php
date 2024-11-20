@@ -19,7 +19,9 @@ class Person
 
         $this->IDCARD = $IDCARD;
 
-        $this->email = $email;
+        $this->validateEmail($email)
+            ? $this->email = $email
+            : throw new \InvalidArgumentException("Error: Invalid mail address: " . $email);
     }
 
 

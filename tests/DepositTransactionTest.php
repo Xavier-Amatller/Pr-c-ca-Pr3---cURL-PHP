@@ -43,7 +43,7 @@ class DepositTransactionTest extends TestCase
     public function testTransactionInfo()
     {
         $trans = new DepositTransaction(22.0);
-        $this->assertEquals('DEPOSIT_TRANSACTION', $trans->getTransaction());
+        $this->assertEquals('DEPOSIT_TRANSACTION', $trans->getTransactionInfo());
     }
     /**
      * @test

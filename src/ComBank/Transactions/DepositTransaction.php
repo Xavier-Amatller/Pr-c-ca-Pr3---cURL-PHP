@@ -31,7 +31,7 @@ class DepositTransaction extends BaseTransaction implements BankTransactionInter
         return $account->getBalance();
     }
 
-    public function getTransaction(): string
+    public function getTransactionInfo(): string
     {
         return "DEPOSIT_TRANSACTION";
     }

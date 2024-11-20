@@ -44,7 +44,7 @@ class WithdrawTransaction extends BaseTransaction implements BankTransactionInte
         return $account->getBalance();
     }
 
-    public function getTransaction(): string
+    public function getTransactionInfo(): string
     {
         return "WITHDRAW_TRANSACTION";
     }

@@ -12,14 +12,18 @@ namespace ComBank\Bank;
 use ComBank\Exceptions\BankAccountException;
 use ComBank\OverdraftStrategy\NoOverdraft;
 use ComBank\Bank\Contracts\BackAccountInterface;
+use ComBank\Exceptions\FraudulentTransactionException;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
+use ComBank\Support\Traits\APIConnectionsTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 use ComBank\Person\Person;
 
 class BankAccount implements BackAccountInterface
 {
     use AmountValidationTrait;
+    use APIConnectionsTrait;
+
 
     protected  float $balance;
 
@@ -30,6 +34,7 @@ class BankAccount implements BackAccountInterface
     protected Person $holder;
 
     protected string $CURRENCY;
+
 
     function __construct(float $balance = 100, string $CURRENCY = "€ (EUR)")
     {
@@ -43,7 +48,12 @@ class BankAccount implements BackAccountInterface
 
     public function transaction(BankTransactionInterface $transaction): void
     {
-        if (!isset($this->status) || !$this->status) throw new BankAccountException("La cuenta no esta abierta");
+        if (!isset($this->status) || !$this->status)
+            throw new BankAccountException("La cuenta no esta abierta");
+
+        if($this->detectFraud($transaction))
+            throw new FraudulentTransactionException("Fraudulent transaction");
+
         $transaction->applyTransaction($this);
     }
 
@@ -110,7 +120,7 @@ class BankAccount implements BackAccountInterface
 
     /**
      * Get the value of holder
-     */ 
+     */
     public function getHolder()
     {
         return $this->holder;
@@ -120,7 +130,7 @@ class BankAccount implements BackAccountInterface
      * Set the value of holder
      *
      * @return  self
-     */ 
+     */
     public function setHolder($holder)
     {
         $this->holder = $holder;
