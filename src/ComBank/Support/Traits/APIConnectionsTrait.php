@@ -16,61 +16,61 @@ trait APIConnectionsTrait
 {
     public function validateEmail(string $email): bool
     {
-        // $headers = array(
-        //     "Accept" => "aplication/json",
-        //     "x-api-key" => "sk_74f60d4417604652a2bab763abcfa1e8"
-        // );
+        $headers = array(
+            "Accept" => "aplication/json",
+            "x-api-key" => "sk_74f60d4417604652a2bab763abcfa1e8"
+        );
 
-        // $request_body = array(
-        //     "email" => $email,
-        // );
+        $request_body = array(
+            "email" => $email,
+        );
 
-        // $client = new Client();
+        $client = new Client();
 
-        // try {
-        //     $response = $client->request("GET", "https://api.manyapis.com/v1-get-email", array(
-        //         "headers" => $headers,
-        //         "query" => $request_body
-        //     ));
-        // } catch (GuzzleException $e) {
-        //     pl($e->getMessage());
-        // }
+        try {
+            $response = $client->request("GET", "https://api.manyapis.com/v1-get-email", array(
+                "headers" => $headers,
+                "query" => $request_body
+            ));
+        } catch (GuzzleException $e) {
+            pl($e->getMessage());
+        }
 
-        // $content = json_decode($response->getBody()->getContents(), true);
+        $content = json_decode($response->getBody()->getContents(), true);
 
-        // return !$content["isDisposable"] && $content["validFormat"];
-        return true;
+        return !$content["isDisposable"] && $content["validFormat"];
+        // return true;
     }
 
     public function convertBalance(float $balance): float
     {
 
-        // $headers = array(
-        //     "Accept" => "aplication/json",
-        //     "x-api-key" => "sk_74f60d4417604652a2bab763abcfa1e8"
-        // );
+        $headers = array(
+            "Accept" => "aplication/json",
+            "x-api-key" => "sk_74f60d4417604652a2bab763abcfa1e8"
+        );
 
-        // $request_body = array(
-        //     "amount" => $balance,
-        //     "from" => "EUR",
-        //     "to" => "USD"
-        // );
+        $request_body = array(
+            "amount" => $balance,
+            "from" => "EUR",
+            "to" => "USD"
+        );
 
-        // $client = new Client();
+        $client = new Client();
 
-        // try {
-        //     $response = $client->request("GET", "https://api.manyapis.com/v1-convert-currency", array(
-        //         "headers" => $headers,
-        //         "query" => $request_body
-        //     ));
-        // } catch (GuzzleException $e) {
-        //     pl($e->getMessage());
-        // }
+        try {
+            $response = $client->request("GET", "https://api.manyapis.com/v1-convert-currency", array(
+                "headers" => $headers,
+                "query" => $request_body
+            ));
+        } catch (GuzzleException $e) {
+            pl($e->getMessage());
+        }
 
-        // $content = json_decode($response->getBody()->getContents(), true);
+        $content = json_decode($response->getBody()->getContents(), true);
 
-        // return $content["convertedAmount"];
-        return 1.1;
+        return $content["convertedAmount"];
+        // return 1.1;
     }
 
     public function detectFraud(BankTransactionInterface $transaction): bool
@@ -96,33 +96,28 @@ trait APIConnectionsTrait
         return true;
     }
 
-    // ApiRequestTrait.php
     public function validarPrestamo(BankAccount $cuenta, float $cantidad): array {
+
         $url = 'http://localhost/DAW2/Backend/PHP/Pr%c3%a1c%c6%9fca%20Pr3%20%e2%80%93%20cURL%20PHP/src/ComBank/APIs/validarPrestamo.php';
 
-        // Extraer la información necesaria de la cuenta
         $data = [
             'balance' => $cuenta->getBalance(),
             'currency' => $cuenta->getCURRENCY(),
-            'transacciones' => $cuenta->getTransactionHistory()->getTransactions(), // Usamos getTransactions
+            'transacciones' => $cuenta->getTransactionHistory()->getTransactions(), 
             'cantidadPrestamo' => $cantidad,
         ];
 
-        // Convertir los datos a JSON
         $jsonData = json_encode($data);
 
-        // Configurar cURL
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
 
-        // Ejecutar la solicitud y obtener la respuesta
         $response = curl_exec($ch);
         curl_close($ch);
 
-        // Decodificar la respuesta JSON
         return json_decode($response, true);
     }
 }
