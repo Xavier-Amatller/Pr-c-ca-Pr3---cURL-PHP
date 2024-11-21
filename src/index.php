@@ -69,7 +69,7 @@ try {
     pl("Doing fraudulent transaction:");
     $testFraud->transaction(new DepositTransaction(10001));
 } catch (Exception $exception) {
-    pl($exception->getMessage());
+    pl("Error : " . $exception->getMessage());
 }
 
 
