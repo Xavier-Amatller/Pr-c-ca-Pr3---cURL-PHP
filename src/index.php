@@ -17,9 +17,7 @@ use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\Exceptions\ZeroAmountException;
 use ComBank\Bank\InternationalBankAccount;
 use ComBank\Bank\NationalBankAccount;
-use ComBank\Exceptions\InvalidArgsException;
 use ComBank\Person\Person;
-use Combank\Support\Traits\APIConnectionsTrait;
 
 
 require_once 'bootstrap.php';
@@ -48,6 +46,7 @@ try {
 } catch (InvalidArgumentException $e) {
     pl($e->getMessage());
 }
+
 //---[Start testing international account (email validation)]---/
 
 try {
@@ -63,7 +62,11 @@ try {
 
 
 try {
-    $testFraud = new $internationalAccount(5000000);
+    
+    $testFraud = new InternationalBankAccount(5000000);
+    pl("New InternationalBankAccount, balance : " . $testFraud->getBalance());
+
+    pl("Doing fraudulent transaction:");
     $testFraud->transaction(new DepositTransaction(10001));
 } catch (Exception $exception) {
     pl($exception->getMessage());
@@ -72,7 +75,6 @@ try {
 
 
 //---[Bank account 2]---/
-pl('--------- [Start testing bank account #2, Silver overdraft (100.0 funds)] --------');
 try {
 
     $bankAccount2 = new BankAccount(100.0);
